@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 
 import java.util.List;
@@ -11,7 +12,11 @@ public interface AccountDao {
 
     Account findAccountByAccountId (int accountId);
 
-    String getUserByAccountId (int accountId);
+    String getUsernameByAccountId (int accountId);
 
-    void create(Account account);
+    Account create(Account account);
+
+    void addBalance(Transfer transfer);
+
+    void subtractBalance(Transfer transfer);
 }
