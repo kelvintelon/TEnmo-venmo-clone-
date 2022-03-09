@@ -12,6 +12,8 @@ public interface AccountDao {
 
     Account findAccountByAccountId (int accountId);
 
+    Account findAccountByUserId (int userId);
+
     String getUsernameByAccountId (int accountId);
 
     Account create(Account account);

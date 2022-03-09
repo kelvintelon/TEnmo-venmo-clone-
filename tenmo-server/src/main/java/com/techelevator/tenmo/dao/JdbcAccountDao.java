@@ -42,6 +42,17 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
+    public Account findAccountByUserId(int userId) {
+        Account account = null;
+        String sql = "SELECT account_id FROM accounts WHERE user_id = ?;";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId);
+        if (result.next()) {
+            account = mapRowToAccount(result);
+        }
+        return account;
+    }
+
+    @Override
     public String getUsernameByAccountId(int accountId) throws UsernameNotFoundException {
         String sql = "SELECT username FROM accounts " +
                 "JOIN tenmo_user ON accounts.user_id = tenmo_user.user_id " +
@@ -73,6 +84,7 @@ public class JdbcAccountDao implements AccountDao {
         String sql = "UPDATE accounts SET balance = (balance - ?) WHERE account_id = ?;";
         jdbcTemplate.update(sql, transfer.getAmount(), transfer.getAccount_from());
     }
+
 
     private Account mapRowToAccount(SqlRowSet rowSet) {
         Account account = new Account();
