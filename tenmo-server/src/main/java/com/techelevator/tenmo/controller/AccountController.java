@@ -31,27 +31,27 @@ public class AccountController {
         int userId = userDao.findIdByUsername(principal.getName());
         return accountDao.findAccountByUserId(userId).getBalance();
     }
+    @RequestMapping(path = "", method = RequestMethod.GET)
+    public List<Account> getAllAccounts() {
+        return accountDao.getAllAccounts();
+    }
 
-//    @RequestMapping(path = "", method = RequestMethod.GET)
-//    public List<Account> getAllAccounts() {
-//        return accountDao.getAllAccounts();
-//    }
 
-//    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-//    public Account get(@Valid @PathVariable int id) throws AccountNotFoundException {
-//        return accountDao.findAccountByAccountId(id);
-//    }
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    public Account get(@Valid @PathVariable int id) throws AccountNotFoundException {
+        return accountDao.findAccountByAccountId(id);
+    }
 
 //    @RequestMapping(path = "/{username}", method = RequestMethod.GET)
 //    public String getByUsername(@Valid @PathVariable String username) throws AccountNotFoundException {
 //        return accountDao.getUsernameByAccountId();
 //    }
 
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @RequestMapping(path = "", method = RequestMethod.POST)
-//    public Account create(@Valid @RequestBody Account account) {
-//        return accountDao.create(account);
-//    }
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(path = "", method = RequestMethod.POST)
+    public Account create(@Valid @RequestBody Account account) {
+        return accountDao.create(account);
+    }
 
 
 }

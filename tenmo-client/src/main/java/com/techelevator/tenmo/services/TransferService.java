@@ -43,7 +43,7 @@ public class TransferService {
         return transfers;
     }
 
-    public Transfer sendBucks () {
+    public Transfer sendBucks (Transfer newTransfer) {
         Transfer transfer = null;
         try {
             ResponseEntity<Transfer> response =

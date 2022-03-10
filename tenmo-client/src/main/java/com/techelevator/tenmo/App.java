@@ -1,5 +1,6 @@
 package com.techelevator.tenmo;
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
@@ -7,6 +8,7 @@ import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
 import com.techelevator.tenmo.services.TransferService;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.sql.SQLOutput;
 
@@ -108,13 +110,29 @@ public class App {
 	}
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
-		
+		getAllUsers();
+		int yourAccount = consoleService.promptForInt("Enter your account ID: ");
+        int destinationAccount = consoleService.promptForInt("Enter account ID you would like to send to: ");
+        String amountToSend = consoleService.promptForString("How much would you like to send? ");
+        BigDecimal amount = new BigDecimal(amountToSend);
+        System.out.println(amount);
+
 	}
 
 	private void requestBucks() {
 		// TODO Auto-generated method stub
 		
 	}
+    private void getAllUsers() {
+        Account[] allAccounts = accountService.getAllAccounts();
+        System.out.println("The following users are available to send money to: ");
+        System.out.println();
+        for (Account account : allAccounts) {
+            System.out.println("User ID: " + account.getUserId());
+            System.out.println("Account ID: " + account.getAccountId());
+            System.out.println();
+        }
+
+    }
 
 }
