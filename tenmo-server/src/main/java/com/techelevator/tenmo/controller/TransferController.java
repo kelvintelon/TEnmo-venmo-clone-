@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
-@RequestMapping(path = "/transfers")
+@RequestMapping(path = "/transfer")
 
 public class TransferController {
 
@@ -28,9 +28,7 @@ public class TransferController {
         this.userDao = userDao;
         this.accountDao = accountDao;
     }
-    public TransferController() {
 
-    }
     @RequestMapping(path = "", method = RequestMethod.GET)
     public List<Transfer> getAllTransfers() {
         return transferDao.getAllTransfers();

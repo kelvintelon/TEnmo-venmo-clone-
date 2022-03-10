@@ -10,6 +10,7 @@ public class Account {
     @NotBlank(message = "userId cannot be blank")
     private int userId;
     private BigDecimal balance;
+    @NotBlank(message = "username cannot be blank")
 
     public Account(int accountId, int userId, BigDecimal balance) {
         this.accountId = accountId;
@@ -44,4 +45,5 @@ public class Account {
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
+
 }

@@ -30,6 +30,7 @@ public class App {
         consoleService.printGreeting();
         loginMenu();
         if (currentUser != null) {
+            accountService.setAuthToken(currentUser.getToken());
             mainMenu();
         }
     }
@@ -93,7 +94,7 @@ public class App {
     }
 
 	private void viewCurrentBalance() {
-        System.out.println(accountService.getBalance());
+        System.out.println("Your current account balance is: " + accountService.getBalance());
 	}
 
 	private void viewTransferHistory() {

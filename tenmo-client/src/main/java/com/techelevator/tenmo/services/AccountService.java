@@ -47,7 +47,7 @@ public class AccountService {
 
     public BigDecimal getBalance () {
         ResponseEntity<BigDecimal> response =
-                    restTemplate.exchange(API_BASE_URL + "/users/{id}", HttpMethod.GET, makeAuthEntity(), BigDecimal.class);
+                    restTemplate.exchange(API_BASE_URL + "balance", HttpMethod.GET, makeAuthEntity(), BigDecimal.class);
         return response.getBody();
     }
 
