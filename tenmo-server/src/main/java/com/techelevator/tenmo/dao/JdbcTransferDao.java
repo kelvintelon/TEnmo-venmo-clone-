@@ -20,7 +20,7 @@ public class JdbcTransferDao implements TransferDao{
     @Override
     public List<Transfer> getAllTransfersByUserId(int userId) {
         List<Transfer> getTransferByID = new ArrayList<>();
-        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfers WHERE user_id = ?;";
+        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfer WHERE user_id = ?;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId);
         while (result.next()) {
             getTransferByID.add(mapRowToTransfer(result));
@@ -31,7 +31,7 @@ public class JdbcTransferDao implements TransferDao{
     @Override
     public List<Transfer> getAllTransfers() {
         List<Transfer> getTransfers = new ArrayList<>();
-        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfers;";
+        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfer;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql);
         while (result.next()) {
             getTransfers.add(mapRowToTransfer(result));
@@ -42,7 +42,7 @@ public class JdbcTransferDao implements TransferDao{
     @Override
     public Transfer getTransferByTransferId(int transferId) {
         Transfer transfer = null;
-        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfers WHERE transfer_id = ?;";
+        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfer WHERE transfer_id = ?;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, transferId);
         if (result.next()) {
             transfer = mapRowToTransfer(result);
@@ -50,6 +50,15 @@ public class JdbcTransferDao implements TransferDao{
         return transfer;
 
     }
+
+    @Override
+    public Transfer sendBucks(Transfer transfer) {
+        String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
+                    "values(?, ?, ?, ?, ?) RETURNING transfer_id;";
+        int newId = jdbcTemplate.queryForObject(sql, Integer.class, transfer.getTransfer_type_id(), transfer.getTransfer_status_id(), transfer.getAccount_from(), transfer.getAccount_to(), transfer.getAmount());
+        return getTransferByTransferId(newId);
+    }
+
 
     private Transfer mapRowToTransfer(SqlRowSet rowSet) {
         Transfer transfer = new Transfer();

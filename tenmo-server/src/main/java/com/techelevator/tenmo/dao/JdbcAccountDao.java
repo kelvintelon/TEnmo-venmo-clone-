@@ -22,7 +22,7 @@ public class JdbcAccountDao implements AccountDao {
     @Override
     public List<Account> getAllAccounts() {
         List<Account> allAccounts = new ArrayList<>();
-        String sql = "SELECT account_id, user_id, balance FROM accounts";
+        String sql = "SELECT account_id, user_id, balance FROM account";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql);
         while (result.next()) {
             allAccounts.add(mapRowToAccount(result));
@@ -33,7 +33,7 @@ public class JdbcAccountDao implements AccountDao {
     @Override
     public Account findAccountByAccountId(int accountId) {
         Account account = null;
-        String sql = "SELECT account_id FROM accounts WHERE account_id = ?;";
+        String sql = "SELECT account_id FROM account WHERE account_id = ?;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, accountId);
         if (result.next()) {
             account = mapRowToAccount(result);
@@ -44,7 +44,7 @@ public class JdbcAccountDao implements AccountDao {
     @Override
     public Account findAccountByUserId(int userId) {
         Account account = null;
-        String sql = "SELECT account_id FROM accounts WHERE user_id = ?;";
+        String sql = "SELECT account_id FROM account WHERE user_id = ?;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId);
         if (result.next()) {
             account = mapRowToAccount(result);
@@ -54,8 +54,8 @@ public class JdbcAccountDao implements AccountDao {
 
     @Override
     public String getUsernameByAccountId(int accountId) throws UsernameNotFoundException {
-        String sql = "SELECT username FROM accounts " +
-                "JOIN tenmo_user ON accounts.user_id = tenmo_user.user_id " +
+        String sql = "SELECT username FROM account " +
+                "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
                 "WHERE account_id = ?;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, accountId);
         if (result.next()) {
@@ -75,13 +75,13 @@ public class JdbcAccountDao implements AccountDao {
 
     @Override
     public void addBalance(Transfer transfer) {
-        String sql = "UPDATE accounts SET balance = (balance + ?) WHERE account_id = ?;";
+        String sql = "UPDATE account SET balance = (balance + ?) WHERE account_id = ?;";
         jdbcTemplate.update(sql, transfer.getAmount(), transfer.getAccount_to());
     }
 
     @Override
     public void subtractBalance(Transfer transfer) {
-        String sql = "UPDATE accounts SET balance = (balance - ?) WHERE account_id = ?;";
+        String sql = "UPDATE account SET balance = (balance - ?) WHERE account_id = ?;";
         jdbcTemplate.update(sql, transfer.getAmount(), transfer.getAccount_from());
     }
 

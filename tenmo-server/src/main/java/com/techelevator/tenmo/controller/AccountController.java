@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
-@RequestMapping(path="/accounts")
+@RequestMapping(path="/account")
 public class AccountController {
 
     private AccountDao accountDao;
@@ -40,16 +40,19 @@ public class AccountController {
         return accountDao.findAccountByAccountId(id);
     }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/users/{id}", method = RequestMethod.GET)
     public String getByUsername(@Valid @PathVariable int id) throws AccountNotFoundException {
         return accountDao.getUsernameByAccountId(id);
     }
+
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "", method = RequestMethod.POST)
     public Account create(@Valid @RequestBody Account account) {
         return accountDao.create(account);
     }
-    @RequestMapping(path = "/userbalance", method = RequestMethod.GET)
+
+
+    @RequestMapping(path = "/users", method = RequestMethod.GET)
     public BigDecimal getBalance(Principal principal) throws AccountNotFoundException {
         int userId = userDao.findIdByUsername(principal.getName());
         return accountDao.findAccountByUserId(userId).getBalance();

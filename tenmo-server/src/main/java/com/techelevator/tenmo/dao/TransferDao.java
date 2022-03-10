@@ -9,5 +9,7 @@ public interface TransferDao {
     List<Transfer> getAllTransfersByUserId(int userId);
     List<Transfer> getAllTransfers();
     Transfer getTransferByTransferId(int transferId);
+    Transfer sendBucks(Transfer transfer);
+
 
 }
