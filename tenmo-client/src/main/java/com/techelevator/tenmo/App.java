@@ -90,7 +90,7 @@ public class App {
             } else if (menuSelection == 5) {
                 requestBucks();
             } else if (menuSelection == 0) {
-                continue;
+                System.exit(0);
             } else {
                 System.out.println("Invalid Selection");
             }
@@ -103,8 +103,44 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
-		
+        long yourUserLong = currentUser.getUser().getId();
+        int yourUserAsInt = (int)yourUserLong;
+		Transfer[] allTransfers = transferService.getAllTransfersByUserId(yourUserAsInt);
+        System.out.println();
+        System.out.println("This is your transfer history:");
+        for (Transfer transfer : allTransfers) {
+            System.out.println();
+            System.out.println("Transfer ID: " + transfer.getTransfer_id());
+            System.out.println("From: " + accountService.findUsernameByUserId(accountService.findUserIdByAccountId(transfer.getAccount_from())));
+            System.out.println("To: " + accountService.findUsernameByUserId(accountService.findUserIdByAccountId(transfer.getAccount_to())));
+            System.out.println("Amount: $" + transfer.getAmount());
+
+        }
+        System.out.println();
+        int transferID = consoleService.promptForInt("Enter transfer ID to see more details:");
+        Transfer returnedTransfer = transferService.getTransferByTransferId(transferID);
+        System.out.println();
+        System.out.println("Transfer details");
+        System.out.println("----------------");
+        System.out.println("Transfer ID: " + returnedTransfer.getTransfer_id());
+        System.out.println("From: " + accountService.findUsernameByUserId(accountService.findUserIdByAccountId(returnedTransfer.getAccount_from())));
+        System.out.println("To: " + accountService.findUsernameByUserId(accountService.findUserIdByAccountId(returnedTransfer.getAccount_to())));
+        if (returnedTransfer.getTransfer_type_id() == 2) {
+            System.out.println("Type: Send");
+        }
+        if (returnedTransfer.getTransfer_type_id() == 2) {
+            System.out.println("Type: Request");
+        }
+        if (returnedTransfer.getTransfer_status_id() == 2) {
+            System.out.println("Status: Approved");
+        }
+        if (returnedTransfer.getTransfer_status_id() == 1) {
+            System.out.println("Status: Pending");
+        }
+        if (returnedTransfer.getTransfer_status_id() == 3) {
+            System.out.println("Status: Rejected");
+        }
+        System.out.println("Amount: $" + returnedTransfer.getAmount());
 	}
 
 	private void viewPendingRequests() {
@@ -155,7 +191,46 @@ public class App {
 	}
 
 	private void requestBucks() {
-		// TODO Auto-generated method stub
+        getAllUsers();
+
+        long yourUserLong = currentUser.getUser().getId();
+        long yourAccountId = accountService.findAccountIdByUserId(yourUserLong);
+        int yourAccountIdAsInt = (int) yourAccountId;
+        System.out.println("Your Account ID is " + yourAccountIdAsInt);
+
+        int destinationAccount = consoleService.promptForInt("Enter account ID you would like to request from: ");
+
+
+        if (yourAccountId == destinationAccount) {
+            System.out.println("You aren't allowed to request money from yourself.");
+            return;
+        }
+
+        String amountToRequest = consoleService.promptForString("How much would you like to request? ");
+        BigDecimal amount = new BigDecimal(amountToRequest);
+        
+//        if (amount.compareTo(accountService.getBalance()) > 0) {
+//            System.out.println("You can't send more money than you have.");
+//            return;
+//        }
+
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            System.out.println("You can't request zero or less than zero.");
+            return;
+        }
+        Transfer newTransfer = new Transfer();
+        newTransfer.setTransfer_status_id(1);
+        newTransfer.setTransfer_type_id(1);
+        newTransfer.setAccount_to(yourAccountIdAsInt);
+        newTransfer.setAccount_from(destinationAccount);
+        newTransfer.setAmount(amount);
+
+        transferService.sendBucks(newTransfer);
+        System.out.println();
+        System.out.println("Request has been made: ");
+        System.out.println("To: " + currentUser.getUser().getUsername());
+        System.out.println("From: " + accountService.findUsernameByUserId(accountService.findUserIdByAccountId(destinationAccount)));
+        System.out.println("Amount: $" + amount);
 		
 	}
     private void getAllUsers() {

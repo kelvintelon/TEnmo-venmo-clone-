@@ -18,17 +18,6 @@ public class JdbcTransferDao implements TransferDao{
     }
 
     @Override
-    public List<Transfer> getAllTransfersByUserId(int userId) {
-        List<Transfer> getTransferByID = new ArrayList<>();
-        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfer WHERE user_id = ?;";
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId);
-        while (result.next()) {
-            getTransferByID.add(mapRowToTransfer(result));
-        }
-        return getTransferByID;
-    }
-
-    @Override
     public List<Transfer> getAllTransfers() {
         List<Transfer> getTransfers = new ArrayList<>();
         String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfer;";
@@ -37,6 +26,29 @@ public class JdbcTransferDao implements TransferDao{
             getTransfers.add(mapRowToTransfer(result));
         }
         return getTransfers;
+    }
+
+    @Override
+    public List<Transfer> getAllTransfersByUserId(int userId) {
+        List<Transfer> getTransferByID = new ArrayList<>();
+        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfer JOIN account ON account.account_id = transfer.account_from JOIN account a ON a.account_id = transfer.account_to WHERE a.user_id = ? OR account.user_id = ?;";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId, userId);
+        while (result.next()) {
+            getTransferByID.add(mapRowToTransfer(result));
+        }
+        return getTransferByID;
+    }
+
+    // for request bucks
+    @Override
+    public List<Transfer> getPendingTransfersByUserId(int userId) {
+        List<Transfer> getPendingTransfer = new ArrayList<>();
+        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfer JOIN account ON account.account_id = transfer.account_from WHERE transfer_status_id = 1 AND user_id = ?;";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId);
+        while (result.next()) {
+            getPendingTransfer.add(mapRowToTransfer(result));
+        }
+        return getPendingTransfer;
     }
 
     @Override
@@ -50,6 +62,9 @@ public class JdbcTransferDao implements TransferDao{
         return transfer;
 
     }
+
+
+
 
     @Override
     public Transfer sendBucks(Transfer transfer) {

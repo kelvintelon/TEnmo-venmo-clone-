@@ -35,11 +35,16 @@ public class TransferController {
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public Transfer get(@Valid @PathVariable int id) {
+    public Transfer getTransferByTransferId(@Valid @PathVariable int id) {
         return transferDao.getTransferByTransferId(id);
     }
 
-    @RequestMapping(path = "/users/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/pending/user/{id}", method = RequestMethod.GET)
+    public List<Transfer> getAllPendingTransfersByUserId(int userId) {
+        return transferDao.getPendingTransfersByUserId(userId);
+    }
+
+    @RequestMapping(path = "/user/{id}", method = RequestMethod.GET)
     public List<Transfer> getAllTransfersByUserId(@Valid @PathVariable int id) {
         return transferDao.getAllTransfersByUserId(id);
     }
@@ -47,10 +52,15 @@ public class TransferController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "", method = RequestMethod.POST)
     public void sendBucks (@Valid Principal principal, @RequestBody Transfer transfer) {
-        transferDao.sendBucks(transfer);
-        accountDao.addBalance(transfer);
-        accountDao.subtractBalance(transfer);
-        
+        if (transfer.getTransfer_type_id() == 2) {
+            transferDao.sendBucks(transfer);
+            accountDao.addBalance(transfer);
+            accountDao.subtractBalance(transfer);
+        }
+        if (transfer.getTransfer_type_id() == 1) {
+            transferDao.sendBucks(transfer);
+        }
+
     }
 
 
