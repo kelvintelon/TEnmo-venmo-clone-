@@ -44,10 +44,11 @@ public class TransferService {
     }
 
     public Transfer sendBucks (Transfer newTransfer) {
+        HttpEntity<Transfer> entity = makeTransferEntity(newTransfer);
         Transfer transfer = null;
         try {
             ResponseEntity<Transfer> response =
-                    restTemplate.exchange(API_BASE_URL, HttpMethod.POST, makeAuthEntity(), Transfer.class);
+                    restTemplate.exchange(API_BASE_URL, HttpMethod.POST, entity, Transfer.class);
             transfer = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -55,7 +56,7 @@ public class TransferService {
         return transfer;
     }
 
-    private HttpEntity<Transfer> makeAccountEntity(Transfer transfer) {
+    private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authToken);

@@ -65,5 +65,11 @@ public class AccountService {
         return new HttpEntity<>(headers);
     }
 
+    public long findAccountIdByUserId (long userId) {
+        ResponseEntity<Long> response =
+                    restTemplate.exchange(API_BASE_URL + userId, HttpMethod.GET, makeAuthEntity(), Long.class);
+        return response.getBody();
+    }
+
 
 }

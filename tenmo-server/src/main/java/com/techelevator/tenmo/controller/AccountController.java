@@ -38,8 +38,8 @@ public class AccountController {
 
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public Account get(@Valid @PathVariable int id) throws AccountNotFoundException {
-        return accountDao.findAccountByAccountId(id);
+    public int get(@Valid @PathVariable int id) throws AccountNotFoundException {
+        return accountDao.findAccountIdByUserId(id);
     }
 
 //    @RequestMapping(path = "/{username}", method = RequestMethod.GET)

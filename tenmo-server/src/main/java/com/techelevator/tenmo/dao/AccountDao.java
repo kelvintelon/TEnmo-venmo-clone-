@@ -10,7 +10,7 @@ public interface AccountDao {
 
     List<Account> getAllAccounts();
 
-    Account findAccountByAccountId (int accountId);
+    int findAccountIdByUserId (int userId);
 
     Account findAccountByUserId (int userId);
 

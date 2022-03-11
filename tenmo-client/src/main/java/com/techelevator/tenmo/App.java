@@ -2,6 +2,7 @@ package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
@@ -33,6 +34,8 @@ public class App {
         loginMenu();
         if (currentUser != null) {
             accountService.setAuthToken(currentUser.getToken());
+            transferService.setAuthToken(currentUser.getToken());
+
             mainMenu();
         }
     }
@@ -111,11 +114,37 @@ public class App {
 
 	private void sendBucks() {
 		getAllUsers();
-		int yourAccount = consoleService.promptForInt("Enter your account ID: ");
+
+        long yourUserLong = currentUser.getUser().getId();
+        long yourAccountId = accountService.findAccountIdByUserId(yourUserLong);
+        int yourAccountIdAsInt = (int) yourAccountId;
+        System.out.println("Your Account ID is " + yourAccountIdAsInt);
+
         int destinationAccount = consoleService.promptForInt("Enter account ID you would like to send to: ");
+        if (yourAccountId == destinationAccount) {
+            System.out.println("You aren't allowed to send money to yourself.");
+            return;
+        }
+
         String amountToSend = consoleService.promptForString("How much would you like to send? ");
         BigDecimal amount = new BigDecimal(amountToSend);
-        System.out.println(amount);
+        if (amount.compareTo(accountService.getBalance()) > 0) {
+            System.out.println("You can't send more money than you have.");
+            return;
+        }
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            System.out.println("You can't send zero or less than zero.");
+            return;
+        }
+        Transfer newTransfer = new Transfer();
+        newTransfer.setTransfer_status_id(2);
+        newTransfer.setTransfer_type_id(2);
+        newTransfer.setAccount_from(yourAccountIdAsInt);
+        newTransfer.setAccount_to(destinationAccount);
+        newTransfer.setAmount(amount);
+
+        transferService.sendBucks(newTransfer);
+
 
 	}
 
@@ -132,6 +161,7 @@ public class App {
             System.out.println("Account ID: " + account.getAccountId());
             System.out.println();
         }
+
 
     }
 

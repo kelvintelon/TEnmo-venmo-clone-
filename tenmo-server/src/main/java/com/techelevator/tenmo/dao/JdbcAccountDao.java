@@ -31,14 +31,14 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
-    public Account findAccountByAccountId(int accountId) {
+    public int findAccountIdByUserId(int userId) {
         Account account = null;
-        String sql = "SELECT account_id, user_id, balance FROM account WHERE account_id = ?;";
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, accountId);
+        String sql = "SELECT account_id, user_id, balance FROM account WHERE user_id = ?;";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId);
         if (result.next()) {
             account = mapRowToAccount(result);
         }
-        return account;
+        return account.getAccountId();
     }
 
     @Override
@@ -70,7 +70,7 @@ public class JdbcAccountDao implements AccountDao {
                 "values(?,?,?) RETURNING account_id;";
         int newId = jdbcTemplate.queryForObject(sql, Integer.class, newAccount.getUserId(), newAccount.getBalance());
 
-        return findAccountByAccountId(newId);
+        return findAccountByUserId(newId);
     }
 
     @Override
