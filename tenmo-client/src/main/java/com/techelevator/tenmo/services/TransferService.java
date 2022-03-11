@@ -43,6 +43,18 @@ public class TransferService {
         return transfers;
     }
 
+    public Transfer[] getAllPendingTransfersByUserId(int id) {
+        Transfer[] transfers = null;
+        try {
+            ResponseEntity<Transfer[]> response =
+                    restTemplate.exchange(API_BASE_URL + "/pending/" + id, HttpMethod.GET, makeAuthEntity(), Transfer[].class);
+            transfers = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return transfers;
+    }
+
     public Transfer sendBucks (Transfer newTransfer) {
         HttpEntity<Transfer> entity = makeTransferEntity(newTransfer);
         Transfer transfer = null;

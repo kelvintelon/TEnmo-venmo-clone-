@@ -128,7 +128,7 @@ public class App {
         if (returnedTransfer.getTransfer_type_id() == 2) {
             System.out.println("Type: Send");
         }
-        if (returnedTransfer.getTransfer_type_id() == 2) {
+        if (returnedTransfer.getTransfer_type_id() == 1) {
             System.out.println("Type: Request");
         }
         if (returnedTransfer.getTransfer_status_id() == 2) {
@@ -144,8 +144,60 @@ public class App {
 	}
 
 	private void viewPendingRequests() {
-		// TODO Auto-generated method stub
-		
+        long youUserLong = currentUser.getUser().getId();
+        int yourUserInt = (int) youUserLong;
+		Transfer[] pendingTransfers = transferService.getAllPendingTransfersByUserId(yourUserInt);
+        System.out.println("These are your pending transfers: ");
+        for (Transfer p : pendingTransfers) {
+            System.out.println("Transfer ID: " + p.getTransfer_id());
+            System.out.println("Account to: " + p.getAccount_to());
+            System.out.println("Account from: " + p.getAccount_from());
+            System.out.println("Transfer Amount: " + p.getAmount());
+            System.out.println("Transfer Status: " + p.getTransfer_status_id());
+            System.out.println("Transfer Type: " + p.getTransfer_type_id());
+            System.out.println();
+        }
+        int transferId = consoleService.promptForInt("Please enter transfer ID to approve or reject: ");
+        System.out.println("1. Approve");
+        System.out.println("2. Reject");
+        System.out.println("0. Don't approve or reject");
+        int choice = consoleService.promptForInt("Please choose an option: ");
+        if (choice == 1) {
+            Transfer approvedTransfer = transferService.getTransferByTransferId(transferId);
+            if (approvedTransfer.getAccount_from() == accountService.findAccountIdByUserId(currentUser.getUser().getId())) {
+
+                approvedTransfer.setTransfer_type_id(2);
+                approvedTransfer.setTransfer_status_id(2);
+
+                if (approvedTransfer.getAmount().compareTo(accountService.getBalance()) > 0) {
+                    System.out.println("You can't send more money than you have.");
+                    return;
+                }
+                if (approvedTransfer.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
+                    System.out.println("You can't send zero or less than zero.");
+                    return;
+                }
+                transferService.sendBucks(approvedTransfer);
+                System.out.println();
+                System.out.println("Transfer has been completed: ");
+                System.out.println("From: " + currentUser.getUser().getUsername());
+                System.out.println("To: " + accountService.findUsernameByUserId(accountService.findUserIdByAccountId(approvedTransfer.getAccount_to())));
+                System.out.println("Amount: $" + approvedTransfer.getAmount());
+            } else {
+                System.out.println("You are not allowed to approve a request for an account you do not own.");
+            }
+
+        }
+        if (choice == 2) {
+            Transfer rejectedTransfer = transferService.getTransferByTransferId(transferId);
+            rejectedTransfer.setTransfer_status_id(3);
+            System.out.println("Transfer has been rejected");
+
+        }
+        if (choice == 3) {
+            return;
+        }
+
 	}
 
 	private void sendBucks() {
@@ -157,7 +209,6 @@ public class App {
         System.out.println("Your Account ID is " + yourAccountIdAsInt);
 
         int destinationAccount = consoleService.promptForInt("Enter account ID you would like to send to: ");
-
 
         if (yourAccountId == destinationAccount) {
             System.out.println("You aren't allowed to send money to yourself.");
@@ -208,7 +259,7 @@ public class App {
 
         String amountToRequest = consoleService.promptForString("How much would you like to request? ");
         BigDecimal amount = new BigDecimal(amountToRequest);
-        
+
 //        if (amount.compareTo(accountService.getBalance()) > 0) {
 //            System.out.println("You can't send more money than you have.");
 //            return;
@@ -231,7 +282,7 @@ public class App {
         System.out.println("To: " + currentUser.getUser().getUsername());
         System.out.println("From: " + accountService.findUsernameByUserId(accountService.findUserIdByAccountId(destinationAccount)));
         System.out.println("Amount: $" + amount);
-		
+
 	}
     private void getAllUsers() {
         Account[] allAccounts = accountService.getAllAccounts();
