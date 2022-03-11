@@ -39,6 +39,7 @@ public class TransferController {
         return transferDao.getTransferByTransferId(id);
     }
 
+    // for pending bucks
     @RequestMapping(path = "/pending/user/{id}", method = RequestMethod.GET)
     public List<Transfer> getAllPendingTransfersByUserId(int userId) {
         return transferDao.getPendingTransfersByUserId(userId);
