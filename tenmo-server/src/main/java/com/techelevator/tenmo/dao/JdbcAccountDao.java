@@ -53,6 +53,18 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
+    public int findUserIdByAccountId(int accountId) {
+        Account account = null;
+        String sql = "SELECT account_id, user_id, balance FROM account WHERE account_id = ?;";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, accountId);
+        if (result.next()) {
+            account = mapRowToAccount(result);
+        }
+        int userId = account.getUserId();
+        return userId;
+    }
+
+    @Override
     public String getUsernameByAccountId(int accountId) throws UsernameNotFoundException {
         String sql = "SELECT username FROM account " +
                 "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +

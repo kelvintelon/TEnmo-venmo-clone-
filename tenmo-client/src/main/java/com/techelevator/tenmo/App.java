@@ -121,6 +121,8 @@ public class App {
         System.out.println("Your Account ID is " + yourAccountIdAsInt);
 
         int destinationAccount = consoleService.promptForInt("Enter account ID you would like to send to: ");
+
+
         if (yourAccountId == destinationAccount) {
             System.out.println("You aren't allowed to send money to yourself.");
             return;
@@ -144,7 +146,11 @@ public class App {
         newTransfer.setAmount(amount);
 
         transferService.sendBucks(newTransfer);
-
+        System.out.println();
+        System.out.println("Transfer has been completed: ");
+        System.out.println("From: " + currentUser.getUser().getUsername());
+        System.out.println("To: " + accountService.findUsernameByUserId(accountService.findUserIdByAccountId(destinationAccount)));
+        System.out.println("Amount: $" + amount);
 
 	}
 
@@ -157,6 +163,7 @@ public class App {
         System.out.println("The following users are available to send money to: ");
         System.out.println();
         for (Account account : allAccounts) {
+            System.out.println("Username: " + accountService.findUsernameByUserId(account.getUserId()));
             System.out.println("User ID: " + account.getUserId());
             System.out.println("Account ID: " + account.getAccountId());
             System.out.println();

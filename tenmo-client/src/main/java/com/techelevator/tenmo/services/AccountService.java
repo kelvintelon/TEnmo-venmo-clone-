@@ -67,7 +67,18 @@ public class AccountService {
 
     public long findAccountIdByUserId (long userId) {
         ResponseEntity<Long> response =
-                    restTemplate.exchange(API_BASE_URL + userId, HttpMethod.GET, makeAuthEntity(), Long.class);
+                    restTemplate.exchange(API_BASE_URL + "/user/" + userId, HttpMethod.GET, makeAuthEntity(), Long.class);
+        return response.getBody();
+    }
+
+    public String findUsernameByUserId (long userId) {
+        ResponseEntity<String> response = restTemplate.exchange("http://localhost:8080/" + userId, HttpMethod.GET, makeAuthEntity(), String.class);
+        return response.getBody();
+    }
+
+    public long findUserIdByAccountId (int accountId) {
+        ResponseEntity<Long> response =
+                restTemplate.exchange(API_BASE_URL + accountId, HttpMethod.GET, makeAuthEntity(), Long.class);
         return response.getBody();
     }
 
