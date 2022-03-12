@@ -1,0 +1,4 @@
+2022-03-12T13:32:10.3320432 401 : [no body]
+2022-03-12T13:59:46.934687 500 : [{"timestamp":"2022-03-12T18:59:46.915+00:00","status":500,"error":"Internal Server Error","message":"PreparedStatementCallback; SQL [INSERT INTO transfer (transfer_type_id, transfer_status_id, account... (601 bytes)]
+2022-03-12T14:05:58.0769342 400 : [{"timestamp":"2022-03-12T19:05:58.055+00:00","status":400,"error":"Bad Request","message":"User registration failed.","path":"/register"}]
+2022-03-12T14:09:15.3684747 401 : [no body]

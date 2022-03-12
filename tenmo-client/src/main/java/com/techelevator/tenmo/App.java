@@ -210,8 +210,9 @@ public class App {
 
         int destinationAccount = consoleService.promptForInt("Enter account ID you would like to send to: ");
 
+
         if (yourAccountId == destinationAccount) {
-            System.out.println("You aren't allowed to send money to yourself.");
+            consoleService.printErrorMessage();
             return;
         }
 
@@ -219,6 +220,7 @@ public class App {
         BigDecimal amount = new BigDecimal(amountToSend);
         if (amount.compareTo(accountService.getBalance()) > 0) {
             System.out.println("You can't send more money than you have.");
+            consoleService.printErrorMessage();
             return;
         }
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
@@ -251,20 +253,16 @@ public class App {
 
         int destinationAccount = consoleService.promptForInt("Enter account ID you would like to request from: ");
 
-
         if (yourAccountId == destinationAccount) {
             System.out.println("You aren't allowed to request money from yourself.");
             return;
         }
-
         String amountToRequest = consoleService.promptForString("How much would you like to request? ");
         BigDecimal amount = new BigDecimal(amountToRequest);
-
 //        if (amount.compareTo(accountService.getBalance()) > 0) {
 //            System.out.println("You can't send more money than you have.");
 //            return;
 //        }
-
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             System.out.println("You can't request zero or less than zero.");
             return;
