@@ -10,8 +10,8 @@ import com.techelevator.tenmo.services.ConsoleService;
 import com.techelevator.tenmo.services.TransferService;
 
 import java.math.BigDecimal;
-import java.security.Principal;
 import java.sql.SQLOutput;
+import java.util.Arrays;
 
 public class App {
 
@@ -98,14 +98,14 @@ public class App {
         }
     }
 
-	private void viewCurrentBalance() {
+    private void viewCurrentBalance() {
         System.out.println("Your current account balance is: " + accountService.getBalance());
-	}
+    }
 
-	private void viewTransferHistory() {
+    private void viewTransferHistory() {
         long yourUserLong = currentUser.getUser().getId();
-        int yourUserAsInt = (int)yourUserLong;
-		Transfer[] allTransfers = transferService.getAllTransfersByUserId(yourUserAsInt);
+        int yourUserAsInt = (int) yourUserLong;
+        Transfer[] allTransfers = transferService.getAllTransfersByUserId(yourUserAsInt);
         System.out.println();
         System.out.println("This is your transfer history:");
         for (Transfer transfer : allTransfers) {
@@ -141,12 +141,12 @@ public class App {
             System.out.println("Status: Rejected");
         }
         System.out.println("Amount: $" + returnedTransfer.getAmount());
-	}
+    }
 
-	private void viewPendingRequests() {
+    private void viewPendingRequests() {
         long youUserLong = currentUser.getUser().getId();
         int yourUserInt = (int) youUserLong;
-		Transfer[] pendingTransfers = transferService.getAllPendingTransfersByUserId(yourUserInt);
+        Transfer[] pendingTransfers = transferService.getAllPendingTransfersByUserId(yourUserInt);
         System.out.println("These are your pending transfers: ");
         for (Transfer p : pendingTransfers) {
             System.out.println("Transfer ID: " + p.getTransfer_id());
@@ -198,10 +198,9 @@ public class App {
             return;
         }
 
-	}
+    }
 
-	private void sendBucks() {
-		getAllUsers();
+    private void sendBucks() {
 
         long yourUserLong = currentUser.getUser().getId();
         long yourAccountId = accountService.findAccountIdByUserId(yourUserLong);
@@ -211,22 +210,26 @@ public class App {
         int destinationAccount = consoleService.promptForInt("Enter account ID you would like to send to: ");
 
 
-        if (yourAccountId == destinationAccount) {
-            consoleService.printErrorMessage();
-            return;
-        }
 
-        String amountToSend = consoleService.promptForString("How much would you like to send? ");
-        BigDecimal amount = new BigDecimal(amountToSend);
-        if (amount.compareTo(accountService.getBalance()) > 0) {
+        if (yourAccountId == destinationAccount) {
+            System.out.println("You can't send money to yourself.");
+            consoleService.printErrorMessage();
+            return;}
+
+            String amountToSend = consoleService.promptForString("How much would you like to send? ");
+            BigDecimal amount = new BigDecimal(amountToSend);
+
+            if (amount.compareTo(accountService.getBalance()) > 0) {
             System.out.println("You can't send more money than you have.");
             consoleService.printErrorMessage();
             return;
-        }
-        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            }
+            if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             System.out.println("You can't send zero or less than zero.");
             return;
-        }
+            }
+
+    {
         Transfer newTransfer = new Transfer();
         newTransfer.setTransfer_status_id(2);
         newTransfer.setTransfer_type_id(2);
@@ -239,11 +242,11 @@ public class App {
         System.out.println("Transfer has been completed: ");
         System.out.println("From: " + currentUser.getUser().getUsername());
         System.out.println("To: " + accountService.findUsernameByUserId(accountService.findUserIdByAccountId(destinationAccount)));
-        System.out.println("Amount: $" + amount);
+        System.out.println("Amount: $" + amount);}
 
-	}
+    }
 
-	private void requestBucks() {
+    private void requestBucks() {
         getAllUsers();
 
         long yourUserLong = currentUser.getUser().getId();
@@ -281,10 +284,12 @@ public class App {
         System.out.println("From: " + accountService.findUsernameByUserId(accountService.findUserIdByAccountId(destinationAccount)));
         System.out.println("Amount: $" + amount);
 
-	}
+    }
+
     private void getAllUsers() {
         Account[] allAccounts = accountService.getAllAccounts();
         System.out.println("The following users are available to send money to: ");
+
         System.out.println();
         for (Account account : allAccounts) {
             System.out.println("Username: " + accountService.findUsernameByUserId(account.getUserId()));
@@ -295,5 +300,4 @@ public class App {
 
 
     }
-
 }

@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class AccountService {
 
     private static final String API_BASE_URL = "http://localhost:8080/account/";
-    private RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate = new RestTemplate();
 
     private String authToken = null;
 
@@ -21,7 +21,7 @@ public class AccountService {
         this.authToken = authToken;
     }
 
-    public Account getAccount(int id) throws AccountNotFoundException {
+    public Account getAccount(int id) {
         Account account = null;
         try {
             ResponseEntity<Account> response =
