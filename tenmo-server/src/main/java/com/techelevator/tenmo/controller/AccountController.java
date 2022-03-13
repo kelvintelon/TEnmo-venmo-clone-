@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
-@RequestMapping(path="/account")
+@RequestMapping(path = "/account")
 public class AccountController {
 
     private AccountDao accountDao;
@@ -48,13 +48,6 @@ public class AccountController {
     public int getAccountIdByUserId(@Valid @PathVariable int id) throws AccountNotFoundException {
         return accountDao.findAccountIdByUserId(id);
     }
-
-//    @RequestMapping(path = "/{username}", method = RequestMethod.GET)
-//    public String getByUsername(@Valid @PathVariable String username) throws AccountNotFoundException {
-//        return accountDao.getUsernameByAccountId();
-//    }
-
-
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "", method = RequestMethod.POST)

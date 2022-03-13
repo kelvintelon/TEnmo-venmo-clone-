@@ -23,6 +23,7 @@ public class Transfer {
     public Transfer() {
 
     }
+
     public int getTransfer_id() {
         return transfer_id;
     }

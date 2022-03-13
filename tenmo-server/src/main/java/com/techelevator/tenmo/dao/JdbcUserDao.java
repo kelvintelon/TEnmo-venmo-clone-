@@ -33,14 +33,12 @@ public class JdbcUserDao implements UserDao {
         }
     }
 
-
-
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT user_id, username, password_hash FROM tenmo_user;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-        while(results.next()) {
+        while (results.next()) {
             User user = mapRowToUser(results);
             users.add(user);
         }
@@ -51,7 +49,7 @@ public class JdbcUserDao implements UserDao {
     public User findByUsername(String username) throws UsernameNotFoundException {
         String sql = "SELECT user_id, username, password_hash FROM tenmo_user WHERE username ILIKE ?;";
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, username);
-        if (rowSet.next()){
+        if (rowSet.next()) {
             return mapRowToUser(rowSet);
         }
         throw new UsernameNotFoundException("User " + username + " was not found.");
@@ -67,7 +65,6 @@ public class JdbcUserDao implements UserDao {
         }
         return user.getUsername();
     }
-
 
     @Override
     public boolean create(String username, String password) {
@@ -89,7 +86,6 @@ public class JdbcUserDao implements UserDao {
         } catch (DataAccessException e) {
             return false;
         }
-
         return true;
     }
 

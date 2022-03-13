@@ -14,6 +14,7 @@ import java.util.List;
 public class JdbcAccountDao implements AccountDao {
 
     private JdbcTemplate jdbcTemplate;
+
     public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -22,7 +23,8 @@ public class JdbcAccountDao implements AccountDao {
     @Override
     public List<Account> getAllAccounts() {
         List<Account> allAccounts = new ArrayList<>();
-        String sql = "SELECT account_id, account.user_id, balance, username FROM account JOIN tenmo_user ON account.user_id = tenmo_user.user_id;";
+        String sql = "SELECT account_id, account.user_id, balance, username FROM account " +
+                     "JOIN tenmo_user ON account.user_id = tenmo_user.user_id;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql);
         while (result.next()) {
             allAccounts.add(mapRowToAccount(result));
@@ -97,7 +99,6 @@ public class JdbcAccountDao implements AccountDao {
         jdbcTemplate.update(sql, transfer.getAmount(), transfer.getAccount_from());
     }
 
-
     private Account mapRowToAccount(SqlRowSet rowSet) {
         Account account = new Account();
         account.setAccountId(rowSet.getInt("account_id"));
@@ -105,5 +106,4 @@ public class JdbcAccountDao implements AccountDao {
         account.setBalance(rowSet.getBigDecimal("balance"));
         return account;
     }
-
 }

@@ -52,7 +52,7 @@ public class TransferController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public void sendBucks (@Valid Principal principal, @RequestBody Transfer transfer) {
+    public void sendBucks(@Valid Principal principal, @RequestBody Transfer transfer) {
         if (transfer.getTransfer_type_id() == 2) {
             transferDao.sendBucks(transfer);
             accountDao.addBalance(transfer);
@@ -64,12 +64,10 @@ public class TransferController {
 
     }
 
-
     @RequestMapping(path = "/{transferId}", method = RequestMethod.PUT)
     public void updateTransferStatus(@Valid @RequestBody Transfer transfer, @PathVariable int transferId) {
         transferDao.updateTransferStatus(transfer, transferId);
     }
-
 
 
 }

@@ -25,7 +25,7 @@ public class TransferService {
             ResponseEntity<Transfer> response =
                     restTemplate.exchange(API_BASE_URL + id, HttpMethod.GET, makeAuthEntity(), Transfer.class);
             transfer = response.getBody();
-        }catch (RestClientResponseException | ResourceAccessException e) {
+        } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log((e.getMessage()));
         }
         return transfer;
@@ -55,7 +55,7 @@ public class TransferService {
         return transfers;
     }
 
-    public Transfer sendBucks (Transfer newTransfer) {
+    public Transfer sendBucks(Transfer newTransfer) {
         HttpEntity<Transfer> entity = makeTransferEntity(newTransfer);
         Transfer transfer = null;
         try {
@@ -68,7 +68,7 @@ public class TransferService {
         return transfer;
     }
 
-    public Transfer updateTransferStatus (Transfer newTransfer, int transferId) {
+    public Transfer updateTransferStatus(Transfer newTransfer, int transferId) {
         HttpEntity<Transfer> entity = makeTransferEntity(newTransfer);
         Transfer transfer = null;
         try {
