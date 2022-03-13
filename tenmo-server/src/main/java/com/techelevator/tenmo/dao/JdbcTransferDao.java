@@ -48,13 +48,14 @@ public class JdbcTransferDao implements TransferDao{
         String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, " +
                 "account_to, amount FROM transfer JOIN account ON account.account_id = transfer.account_from " +
                 "JOIN account a ON a.account_id = transfer.account_to " +
-                "WHERE transfer_status_id = 1 AND a.user_id = ? OR account.user_id = ?;";
+                "WHERE (a.user_id = ? OR account.user_id = ?) AND transfer_status_id = 1;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId, userId);
         while (result.next()) {
             getPendingTransfer.add(mapRowToTransfer(result));
         }
         return getPendingTransfer;
     }
+
 
     @Override
     public Transfer getTransferByTransferId(int transferId) {
@@ -79,6 +80,15 @@ public class JdbcTransferDao implements TransferDao{
         int newId = jdbcTemplate.queryForObject(sql, Integer.class, transfer.getTransfer_type_id(), transfer.getTransfer_status_id(), transfer.getAccount_from(), transfer.getAccount_to(), transfer.getAmount());
         return getTransferByTransferId(newId);
     }
+
+    // update transfer status ID where transfer ID = ?
+    @Override
+    public void updateTransferStatus(Transfer transfer, int transferId) {
+        String sql = "UPDATE transfer SET transfer_status_id = ? WHERE transfer_id = ?;";
+        jdbcTemplate.update(sql, transfer.getTransfer_status_id(), transferId);
+
+    }
+
 
 
     private Transfer mapRowToTransfer(SqlRowSet rowSet) {

@@ -11,6 +11,7 @@ public interface TransferDao {
     Transfer getTransferByTransferId(int transferId);
     List<Transfer> getPendingTransfersByUserId(int userId);
     Transfer sendBucks(Transfer transfer);
+    void updateTransferStatus(Transfer transfer, int transferId);
 
 
 }

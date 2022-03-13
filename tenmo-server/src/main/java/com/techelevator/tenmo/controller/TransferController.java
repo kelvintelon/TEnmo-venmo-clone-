@@ -65,5 +65,11 @@ public class TransferController {
     }
 
 
+    @RequestMapping(path = "/{transferId}", method = RequestMethod.PUT)
+    public void updateTransferStatus(@Valid @RequestBody Transfer transfer, @PathVariable int transferId) {
+        transferDao.updateTransferStatus(transfer, transferId);
+    }
+
+
 
 }

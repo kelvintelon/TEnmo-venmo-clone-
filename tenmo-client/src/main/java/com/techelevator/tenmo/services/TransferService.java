@@ -68,6 +68,18 @@ public class TransferService {
         return transfer;
     }
 
+    public Transfer updateTransferStatus (Transfer newTransfer, int transferId) {
+        HttpEntity<Transfer> entity = makeTransferEntity(newTransfer);
+        Transfer transfer = null;
+        try {
+            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + transferId, HttpMethod.PUT, entity, Transfer.class);
+            transfer = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return transfer;
+    }
+
     private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
