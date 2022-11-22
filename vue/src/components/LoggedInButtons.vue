@@ -6,7 +6,7 @@
       v-if="this.$router.currentRoute.path == '/userPage/' + username"
     >
       <span class="material-icons"> grid_view </span>
-      See Feed
+      Main Page
     </button>
     <button
       class="button"
@@ -14,36 +14,36 @@
       v-else
     >
       <span class="material-icons">perm_identity</span>
-      See Your Page
+      Transactions
     </button>
-    <button
+    <!-- <button
       class="button"
       @click="$router.push('/')"
       v-if="this.$router.currentRoute.path == '/favorites/' + username"
     >
       <span class="material-icons"> grid_view </span>
       See Feed
-    </button>
-    <button
+    </button> -->
+    <!-- <button
       class="button"
       @click="$router.push({ name: 'favorites', params: { username } })"
       v-else
     >
       <span class="material-icons">bookmarks</span>
       Favorites
-    </button>
-    <button
+    </button> -->
+    <!-- <button
       class="button"
       @click="$router.push('/')"
       v-if="this.$router.currentRoute.path == '/addPicture'"
     >
       <span class="material-icons"> grid_view </span>
       See Feed
-    </button>
-    <button class="button" @click="$router.push('/addPicture')" v-else>
+    </button> -->
+    <!-- <button class="button" @click="$router.push('/addPicture')" v-else>
       <span class="material-icons"> photo </span>
       Add Picture
-    </button>
+    </button> -->
 
     <button
       class="logOut button"
@@ -70,7 +70,7 @@ export default {
   mounted() {
     const UserString = localStorage.getItem("user");
     let firstIndex = UserString.indexOf("username");
-    let secondIndex = UserString.indexOf("authorities");
+    let secondIndex = UserString.indexOf("password");
     this.username = UserString.substring(firstIndex + 11, secondIndex - 3);
   },
 };

@@ -1,12 +1,16 @@
 <template>
 <div>
   <div class="home">
-    <div class="sideMenu"><side-menu></side-menu></div>
+    <side-menu></side-menu>
     <header-logo></header-logo>
-    
+    <div class="sideMenu"></div>
     <img id="logoutimage" src="../../img/image.png" v-if="$store.state.token == ''"/>
- 
- 
+    <div v-else class="user-list"><user-list></user-list></div>
+    
+    
+    
+    
+    
 
 
 
@@ -20,6 +24,7 @@
 <script>
 import SideMenu from "../components/SideMenu.vue";
 import HeaderLogo from "../components/HeaderLogo.vue";
+import UserList from "../components/UserList.vue"
 
 
 export default {
@@ -35,12 +40,16 @@ export default {
   components: {
     SideMenu,
     HeaderLogo,
+    UserList,
   },
   
 };
 </script>
 <style>
-
+.user-list{
+  display: flex;
+  justify-content: center;
+}
 .image {
     width:30%;
     margin: auto;
@@ -48,7 +57,7 @@ export default {
 }
 
 body {
-  background-color: #000000;
+  background-color: #b49019;
   margin: 0px;
 }
 
@@ -59,9 +68,8 @@ body {
   color: aliceblue;
   
 }
-.sideMenu{
-  z-index: 0;
-}
+
+
 
 #logoutimage{
   z-index: -100;

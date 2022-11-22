@@ -1,8 +1,8 @@
 <template>
   <div id="register" class="text-center">
     <form class="form-register" @submit.prevent="register">
-      <h1 class="h3 mb-3 font-weight-normal" id="signuplogo">Tech Gram</h1>
-      <h3>Sign up to see photos from your friends:</h3>
+      <h1 class="h3 mb-3 font-weight-normal" id="signuplogo"><span class="highlight">T</span><span class="highlight">E</span>nmo</h1>
+      <h3>Sign up to send TE bucks to your friends:</h3>
       <div id="alert" class="alert alert-danger" role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
@@ -39,7 +39,7 @@
         Create Account
       </button>
     </form>
-        <link href="http://fonts.cdnfonts.com/css/billabong" rel="stylesheet">
+        
 
   </div>
 </template>
@@ -103,6 +103,6 @@ padding-bottom: 15px;}
 #signuplogo {
   margin-top: 40px;
   font-size: 70px;
-  font-family: 'Billabong', sans-serif; 
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 </style>

@@ -5,7 +5,7 @@ import Login from '../views/Login.vue'
 import Logout from '../views/Logout.vue'
 import Register from '../views/Register.vue'
 import store from '../store/index'
-import UserFeed from '../views/UserFeed'
+import UserPage from '../views/UserPage.vue'
 
 Vue.use(Router)
 
@@ -55,13 +55,14 @@ const router = new Router({
       }
     },
     {
-      path: '/userFeed/:username',
-      name: 'userFeed',
-      component: UserFeed,
+      path: '/userPage/:username',
+      name: 'userPage',
+      component: UserPage,
       meta: {
         requiresAuth: true
       }
     },
+    
   ]
 })
 

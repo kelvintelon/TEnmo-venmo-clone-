@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 /**
  * Controller to authenticate users.
  */
+@CrossOrigin
 @RestController
 public class AuthenticationController {
 

@@ -1,10 +1,7 @@
 <template>
   <div>
     <header>
-      <!-- <img
-        class="logo"
-        src="https://images.squarespace-cdn.com/content/v1/55ef2da9e4b03f6e1ef0cd28/1558034939902-652JBW936829PJQM7K30/Mark.jpg"
-      /> -->
+   
       <div class="mainHeader">
         <router-link v-bind:to="{ name: 'home'}" style="text-decoration: none; color: inherit;">
 
@@ -35,7 +32,7 @@ export default {
     created(){
       const UserString= localStorage.getItem("user");
       let firstIndex = UserString.indexOf("username");
-      let secondIndex = UserString.indexOf("authorities");
+      let secondIndex = UserString.indexOf("password");
       this.username = UserString.substring(firstIndex + 11, secondIndex - 3);
     }
 };
@@ -43,18 +40,20 @@ export default {
 
 <style>
 header {
-  display: flex;
+  
   
   text-align: center;
   background-color: #b49019;
  
   width: 100%;
   height: 80px;
+  border-bottom: 1px solid black;
 }
 
 .mainHeader{
   margin-left: 55%;
   text-decoration: none;
+ display: flex;
 
 }
 
@@ -78,12 +77,14 @@ header {
 
 }
 .loginUsername{
-  width: 50%;
-  height: 100%;
+  width: 100%;
+  height: 110%;
   display: flex;
   flex-direction: row-reverse;
+  align-content: right;
   margin: 0 0 auto auto;
 }
+
 .loginUser{
   display: flex;
   color: aliceblue;

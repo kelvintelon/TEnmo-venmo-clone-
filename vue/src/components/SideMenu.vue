@@ -2,7 +2,7 @@
   <div class="menu">
     <logged-in-buttons v-if="$store.state.token != ''"></logged-in-buttons>
     <login-or-signUp class="buttons" v-else ></login-or-signUp>
-    <footer class="footer">&copy; Kelvin Telon 2022</footer>
+    <footer class="footer">&copy; Tech Elevator 2022</footer>
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"

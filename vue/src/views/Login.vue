@@ -1,7 +1,7 @@
 <template>
   <div id="login" class="text-center">
     <form class="form-signin" @submit.prevent="login">
-      <h1 class="font-weight-normal" id="loginlogo">TEnmo</h1>  
+      <h1 class="font-weight-normal" id="loginlogo"><span class="highlight">T</span><span class="highlight">E</span>nmo</h1>  
       <h3>Log in to see your page:</h3>
       <div class="alert alert-danger" role="alert" v-if="invalidCredentials">
         Invalid username and password!
@@ -114,7 +114,7 @@ font-size: 20px;
   color: blue;
 }
 .btn {
-  background-color: #00adee;
+  background-color: #b49019;
   border: 1px solid black;
     border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -126,7 +126,7 @@ font-size: 20px;
   margin-top: 50px;
 }
 .btn:hover {
-      background-color:#167fa5;
+      background-color:green;
       transition: 0.7s;
   }
 
