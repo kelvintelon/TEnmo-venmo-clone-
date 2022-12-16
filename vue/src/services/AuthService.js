@@ -12,6 +12,10 @@ export default {
 
   delete(user) {
     return axios.delete('/deleteUser', user)
+  },
+
+  getUsernameByUserId(id) {
+    return axios.get(`/${id}`)
   }
 
 }

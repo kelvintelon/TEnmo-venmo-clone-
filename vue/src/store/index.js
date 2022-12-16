@@ -20,6 +20,7 @@ export default new Vuex.Store({
   state: {
     token: currentToken || '',
     user: currentUser || {},
+    listOfUsers: [],
 
 
   },
@@ -40,6 +41,9 @@ export default new Vuex.Store({
       state.user = {};
       axios.defaults.headers.common = {};
     },
+    SET_LIST(state, data) {
+      state.listOfUsers = data;
+    }
   },
   // actions: {
   // },

@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @PreAuthorize("isAuthenticated()")
 @RequestMapping(path = "/account")
@@ -33,8 +34,9 @@ public class AccountController {
     }
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<Account> getAllAccounts() {
-        return accountDao.getAllAccounts();
+    public List<Account> getAllAccounts(Principal principal) {
+        int userId = userDao.findIdByUsername(principal.getName());
+        return accountDao.getAllAccounts(userId);
     }
 
     // should get user id

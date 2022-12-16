@@ -30,10 +30,12 @@ export default {
         }
     },
     created(){
+      if (this.$store.state.token != '') {
       const UserString= localStorage.getItem("user");
       let firstIndex = UserString.indexOf("username");
       let secondIndex = UserString.indexOf("password");
       this.username = UserString.substring(firstIndex + 11, secondIndex - 3);
+      }
     }
 };
 </script>

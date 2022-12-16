@@ -21,11 +21,13 @@ public class JdbcAccountDao implements AccountDao {
 
 
     @Override
-    public List<Account> getAllAccounts() {
+    public List<Account> getAllAccounts(int userId) {
         List<Account> allAccounts = new ArrayList<>();
         String sql = "SELECT account_id, account.user_id, balance, username FROM account " +
-                     "JOIN tenmo_user ON account.user_id = tenmo_user.user_id;";
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql);
+                     "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
+                     "WHERE tenmo_user.user_id != ?";
+
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId);
         while (result.next()) {
             allAccounts.add(mapRowToAccount(result));
         }

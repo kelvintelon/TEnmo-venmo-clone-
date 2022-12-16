@@ -4,8 +4,9 @@
     <side-menu></side-menu>
     <header-logo></header-logo>
     <div class="sideMenu"></div>
+    
     <img id="logoutimage" src="../../img/image.png" v-if="$store.state.token == ''"/>
-    <div v-else class="user-list"><user-list></user-list></div>
+    <div v-else class="user-list" ><user-list :newList="newList" ></user-list></div>
     
     
     
@@ -25,23 +26,53 @@
 import SideMenu from "../components/SideMenu.vue";
 import HeaderLogo from "../components/HeaderLogo.vue";
 import UserList from "../components/UserList.vue"
+import accountService from "../services/AccountService";
+import userService from "../services/AuthService";
+
 
 
 export default {
   name: "home",
   data() {
     return {
-        
+        newList: [],
     }
   },
-  mounted(){
-        
-    },
   components: {
     SideMenu,
     HeaderLogo,
     UserList,
   },
+  methods: {
+    
+  },
+  mounted(){
+        
+    },
+   beforeCreate() {
+     accountService.getAllAccounts().then((response2) => {
+       
+       this.$store.commit("SET_LIST", response2.data);
+        this.newList = this.$store.state.listOfUsers;
+        this.newList.forEach((user) => { 
+          userService.getUsernameByUserId((user.userId)).then((response3) => {
+        user.username =  response3.data
+        
+        });
+          })
+          this.$store.commit("SET_LIST", this.newList);
+          
+      });
+
+      // UploadFileService.getFiles().then((response) => {
+      //   this.$store.commit("SET_IMAGEPOSTS", response.data);
+      // });
+  //   // accountService.getBalance().then((response) => {
+  //   //   this.balance= response.data;
+  //   // });
+  this.$store.commit("SET_LIST", this.newList);
+  },
+  
   
 };
 </script>
